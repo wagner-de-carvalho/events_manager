@@ -16,14 +16,6 @@ defmodule EventsWeb.EventsController do
     end
   end
 
-  def get(conn, %{"id" => id}) do
-    with %Event{} = event <- Events.get(id) do
-      conn
-      |> put_status(:ok)
-      |> render(:show, event: event)
-    end
-  end
-
   def get_by_pretty_name(conn, %{"pretty_name" => pretty_name}) do
     with %Event{} = event <- Events.get_by_pretty_name(pretty_name) do
       conn
