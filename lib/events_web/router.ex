@@ -20,10 +20,13 @@ defmodule EventsWeb.Router do
     get "/", PageController, :home
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", EventsWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", EventsWeb do
+    pipe_through :api
+
+    post "/events", EventsController, :create
+    get "/events", EventsController, :list
+    get "/events/:pretty_name", EventsController, :get_by_pretty_name
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:events, :dev_routes) do

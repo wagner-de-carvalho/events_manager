@@ -6,6 +6,8 @@ defmodule Events.Get do
   alias Events.Repo
 
   def call(id) do
+    IO.inspect(id, label: "ID >>>>>>>> ")
+
     Event
     |> Repo.get(id)
     |> then(fn
