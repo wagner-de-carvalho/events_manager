@@ -6,14 +6,18 @@ defmodule EventsWeb.ErrorJSON do
   """
   alias Ecto.Changeset
 
-  def render(template, _assigns) do
-    %{errors: %{detail: Phoenix.Controller.status_message_from_template(template)}}
+  def error(%{message: message}) do
+    %{error: message}
   end
 
   def error(%{changeset: changeset}) do
     %{
       errors: Changeset.traverse_errors(changeset, &translate_errors/1)
     }
+  end
+
+  def render(template, _assigns) do
+    %{errors: %{detail: Phoenix.Controller.status_message_from_template(template)}}
   end
 
   defp translate_errors({msg, opts}) do

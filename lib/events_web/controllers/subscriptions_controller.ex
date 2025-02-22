@@ -26,4 +26,12 @@ defmodule EventsWeb.SubscriptionsController do
       |> render(:ranking, ranking: ranking)
     end
   end
+
+  def ranking_by_user(conn, %{"pretty_name" => pretty_name, "user_id" => user_id}) do
+    with ranking when is_list(ranking) <- Subscriptions.ranking(pretty_name) do
+      conn
+      |> put_status(:ok)
+      |> render(:ranking_by_user, ranking: ranking, user_id: user_id)
+    end
+  end
 end
