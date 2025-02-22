@@ -29,6 +29,7 @@ defmodule EventsWeb.Router do
 
     post "/subscriptions/:pretty_name", SubscriptionsController, :create
     post "/subscriptions/:pretty_name/:indication_user_id", SubscriptionsController, :create
+    get "/subscriptions/:pretty_name/ranking", SubscriptionsController, :ranking
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

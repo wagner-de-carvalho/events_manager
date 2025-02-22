@@ -1,4 +1,4 @@
-defmodule Events.Subscriptions.GenerateRanking do
+defmodule Events.Subscriptions.Ranking do
   @moduledoc """
   Generate ranking of event indications
   """
@@ -11,19 +11,20 @@ defmodule Events.Subscriptions.GenerateRanking do
     |> Events.get_by_pretty_name()
     |> then(fn
       nil -> {:error, "event not found"}
-      event -> get_rankings(event.id)
+      event -> ranking(event.id)
     end)
   end
 
-  defp get_rankings(event_id) do
+  defp ranking(event_id) do
     Subscription
-    |> join(:inner, [s], assoc(s, :subscriber), as: :users)
+    |> join(:inner, [s], assoc(s, :indication), as: :referrer)
     |> where([s], not is_nil(s.indication_user_id) and s.event_id == ^event_id)
-    |> select([s, users], %{
+    |> select([s, referrer], %{
       indication_user_id: s.indication_user_id,
-      quantity: count(s.id)
+      quantity: count(s.id),
+      name: referrer.name
     })
-    |> group_by([s], [s.indication_user_id])
+    |> group_by([s, referrer], [s.indication_user_id, referrer.name])
     |> order_by([s], desc: count(s.id))
     |> Repo.all()
   end
