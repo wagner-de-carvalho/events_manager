@@ -6,7 +6,7 @@ defmodule Events.Users.GetByEmail do
   alias Events.Users.User
 
   def call(email) do
-    email
+    User
     |> Repo.get_by(email: email)
     |> then(fn
       nil -> {:error, "user not found"}
