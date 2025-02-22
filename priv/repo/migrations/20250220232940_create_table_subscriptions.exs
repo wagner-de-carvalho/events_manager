@@ -8,5 +8,9 @@ defmodule Events.Repo.Migrations.CreateTableSubscriptions do
       add :indication_user_id, references("users")
       timestamps()
     end
+
+    create unique_index(:subscriptions, [:event_id, :subscriber_user_id],
+             name: :unique_subscription_by_user
+           )
   end
 end

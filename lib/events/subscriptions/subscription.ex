@@ -28,5 +28,9 @@ defmodule Events.Subscriptions.Subscription do
     |> foreign_key_constraint(:indication_user_id, message: "Invalid indication user")
     |> foreign_key_constraint(:subscriber_user_id, message: "Invalid subscriber user")
     |> foreign_key_constraint(:event_id, message: "Invalid event")
+    |> unique_constraint([:event_id, :subscriber_user_id],
+      name: :unique_subscription_by_user,
+      message: "User is already subscribed to this event"
+    )
   end
 end
