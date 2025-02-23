@@ -3,25 +3,28 @@ defmodule Events.Subscriptions.Create do
   Create new subscription
   """
   alias Events.Repo
+  alias Events.Event
   alias Events.Subscriptions.Subscription
   alias Events.Users
   alias Events.Users.User
 
   def call(%{"pretty_name" => pretty_name, "email" => email, "name" => name} = params) do
-    event = Events.get_by_pretty_name(pretty_name)
+    event = Events.get_by_pretty_name(pretty_name) || pretty_name
     user = get_user(email, name)
     subscribe(event, user, params)
   end
 
-  defp subscribe(event, user, %{"indication_user_id" => indication_user_id}) do
+  defp subscribe(%Event{} = event, user, %{"indication_user_id" => indication_user_id}) do
     %{event_id: event.id, subscriber_user_id: user.id, indication_user_id: indication_user_id}
     |> exec()
   end
 
-  defp subscribe(event, user, _) do
+  defp subscribe(%Event{} = event, user, _) do
     %{event_id: event.id, subscriber_user_id: user.id}
     |> exec()
   end
+
+  defp subscribe(event, _, _), do: {:error, "event #{event} does not exist"}
 
   defp exec(params) do
     params

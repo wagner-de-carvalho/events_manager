@@ -21,8 +21,6 @@ defmodule EventsWeb.FallbackController do
   end
 
   def call(conn, {:error, message}) do
-    IO.inspect("JSON ERROR !!!!!!!!!!!!!!!")
-
     conn
     |> put_status(:bad_request)
     |> put_view(json: ErrorJSON)
