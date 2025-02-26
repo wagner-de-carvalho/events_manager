@@ -29,7 +29,8 @@ defmodule EventsWeb.SubscriptionsController do
   end
 
   def ranking_by_user(conn, %{"pretty_name" => pretty_name, "user_id" => user_id}) do
-    with ranking when is_list(ranking) <- Subscriptions.ranking(pretty_name),
+    with ranking when is_list(ranking) <-
+           Subscriptions.ranking(pretty_name),
          position when is_map(position) <-
            Subscriptions.ranking_position(ranking, user_id) do
       conn

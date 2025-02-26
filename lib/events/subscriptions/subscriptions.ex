@@ -17,7 +17,7 @@ defmodule Events.Subscriptions do
     |> Enum.find_index(fn %{indication_user_id: id} -> id == user_id end)
     |> then(fn
       nil ->
-        %{error: "user #{user_id} not in the ranking"}
+        {:error, "user #{user_id} not in the ranking"}
 
       position ->
         user =
